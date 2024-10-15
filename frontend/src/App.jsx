@@ -15,17 +15,24 @@
 // App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PlaylistPage from './components/PlaylistPage';
-import PlaylistDetails from './components/PlayListDetails';
+import Home from './pages/Home';
+// import PlaylistPage from './components/PlaylistPage';
+// import PlaylistDetails from './components/PlayListDetails';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Songlist from './pages/Songlist'
+// import { SearchProvider } from './components/SearchContext';
+
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<PlaylistPage />} />
-        <Route path="/playlist/:id" element={<PlaylistDetails />} />
-      </Routes>
-    </Router>
+    // <SearchProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/playlist/:id" element={<><Navbar/><Sidebar/><Songlist /></>} />
+        </Routes>
+      </Router>
   );
 };
 

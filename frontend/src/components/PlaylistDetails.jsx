@@ -1,70 +1,66 @@
 import React, { useState, useEffect } from "react";
 import Player from "./Player"; // Your player component
 import { useParams } from "react-router-dom"; // Import useParams for URL parameters
-
-const playlistSongsData = {
-  1: [
-    {
-      id: 1,
-      title: "Song 1",
-      artist: "Artist 1",
-      audioUrl: "/songs/song1.mp3",
-    },
-    {
-      id: 2,
-      title: "Song 2",
-      artist: "Artist 2",
-      audioUrl: "/songs/song2.mp3",
-    },
-    // Add more songs for this playlist
-  ],
-  2: [
-    {
-      id: 1,
-      title: "Pop Song 1",
-      artist: "Pop Artist 1",
-      audioUrl: "/songs/popsong1.mp3",
-    },
-    {
-      id: 2,
-      title: "Pop Song 2",
-      artist: "Pop Artist 2",
-      audioUrl: "/songs/popsong2.mp3",
-    },
-  ],
-  // Add other playlists' songs
-};
+import axios from "axios"; // Use axios for API requests
 
 const PlaylistDetails = () => {
-  // Use useParams to get the id from the route
-  const { id } = useParams();
+  const { id } = useParams(); // Get playlist ID from URL
 
-  // State to store the songs of the selected playlist
   const [songs, setSongs] = useState([]);
-
-  // State to manage the currently playing song
   const [currentSong, setCurrentSong] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the playlist songs from the static data based on the id from the URL
-    setSongs(playlistSongsData[id] || []);
-  }, [id]); // Rerun when the id changes
+    const fetchSongs = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5500/gather/displaysongs?id=${id}`);
+        setSongs(response.data); // Update with fetched songs
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
 
-  const playSong = (song) => {
-    // Set the song that is currently playing
-    setCurrentSong(song);
+    fetchSongs();
+  }, [id]);
+
+  const playSong = async (songId) => {
+    if (!songId) {
+      console.error("Song ID is undefined");
+      return;
+    }
+
+    try {
+      // Make a request to get the song URL from the backend
+      const response = await axios.get(`http://localhost:5500/gather/song?id=${songId}`);
+      
+      // Assuming the response contains the song URL (response.data.fileUrl)
+      const songUrl = response.data.fileUrl;
+      
+      // Set the song as the current song for the player
+      setCurrentSong({
+        ...songs.find((song) => song.id === songId),
+        fileUrl: songUrl, // Set the song's file URL
+      });
+    } catch (err) {
+      console.error("Error fetching song:", err);
+    }
   };
+
+  if (loading) return <p>Loading songs...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="playlist-details">
       <h1>Playlist Songs</h1>
       <div className="song-list">
-        {/* Loop through the songs and render them */}
         {songs.map((song) => (
-          <div key={song.id} className="song-card">
+          <div key={song.id} className="song-card"> {/* Fix the missing key prop */}
             <h3>{song.title}</h3>
             <p>{song.artist}</p>
-            <button onClick={() => playSong(song)}>Play</button>
+            <button onClick={() => playSong(song.id)}>Play</button> {/* Ensure song.id exists */}
           </div>
         ))}
       </div>

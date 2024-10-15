@@ -2,6 +2,7 @@
   display: none;
 }
 
+
 /* Playlist Page */
 .playlist-card {
   text-align: center;
@@ -19,8 +20,39 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #1db954;
+  /* background-color: #1db954; */
   padding: 20px;
   text-align: center;
   color: white;
 }
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.hide-scrollbar {
+  overflow: hidden; /* To hide the scrollbar */
+}
+
+/* Hide scrollbar for Firefox */
+.hide-scrollbar {
+  scrollbar-width: thin; /* Set scrollbar width to thin */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+/* Optional: Styles for a thin scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Change the width as desired */
+  height: 8px; /* Change the height as desired */
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5); /* Change the color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.8); /* Darker color on hover */
+}
+

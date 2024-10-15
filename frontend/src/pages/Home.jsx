@@ -21,9 +21,9 @@ const albums = [
 const Home = () => {
   return (
     <div className="">
-      <div>
+      {/* <div>
         <Navbar />
-      </div>
+      </div> */}
       <div className="content">
         <Sidebar />
       </div>
